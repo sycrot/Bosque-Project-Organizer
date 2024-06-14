@@ -1,0 +1,40 @@
+.dropdownActions {
+  position: relative;
+
+  .actionButton {
+    border: none;
+    background: none;
+    transition: all .3s;
+
+    &:hover {
+      filter: brightness(.8);
+    }
+  }
+
+  .actions {
+    position: absolute;
+    right: 0;
+    box-shadow: 1px 4px 4px rgba(0,0,0,.25);
+    background: #1B2428;
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 200;
+
+    button {
+      width: 100%;
+      border: none;
+      background: none;
+      padding: 10px;
+      padding-right: 30px;
+      font-size: 14px;
+      text-align: left;
+      color: #fff;
+      font-weight: 400;
+      transition: background .3s;
+
+      &:hover {
+        background: #202b30;
+      }
+    }
+  }
+}

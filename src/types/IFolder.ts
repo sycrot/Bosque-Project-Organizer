@@ -1,8 +1,8 @@
 import { IProject } from "./IProject";
 
 export interface IFolder {
-  id: string;
+  id?: string;
 	title: string;
-	items: IProject[];
-	created: string
+	items?: IProject[];
+	created?: string
 }

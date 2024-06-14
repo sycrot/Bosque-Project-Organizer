@@ -1,0 +1,92 @@
+.label {
+  color: #fff;
+  font-weight: 500;
+  margin: 0;
+  margin-bottom: 5px;
+  width: 100%;
+  font-size: 12px;
+}
+
+.dropdown {
+  width: 100%;
+  position: relative;
+
+  .button {
+    width: 100%;
+    background: #1B2428;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    font-size: 12px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    text-align: start;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.buttonShow {
+      border-radius: 5px 5px 0 0;
+    }
+
+
+  }
+
+  .options {
+    width: 100%;
+    height: 100%;
+    max-height: 50px;
+    overflow: auto;
+    background: #1B2428;
+    border-radius: 0 0 5px 5px;
+    position: absolute;
+    bottom: -30px;
+    z-index: 100;
+    animation: dropdown .2s;
+    box-shadow: 1px 4px 4px rgba(0, 0, 0, .25);
+
+    &::-webkit-scrollbar-thumb {
+      background: #27353C;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #1B2428;
+    }
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-button {
+      opacity: 0;
+    }
+
+    @keyframes dropdown {
+      from {
+        transform: scaleY(0) translateY(-30px);
+      }
+
+      to {
+        transform: scaleY(1) translateY(0);
+      }
+    }
+
+    .option {
+      width: 100%;
+      display: block;
+      color: #fff;
+      cursor: pointer;
+      padding: 9px 10px;
+      font-size: 12px;
+      transition: background .3s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &:hover {
+        background: #212d33;
+      }
+    }
+  }
+}

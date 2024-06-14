@@ -1,0 +1,30 @@
+.labelContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  .label {
+    color: #fff;
+    font-weight: 500;
+    margin: 0;
+    margin-bottom: 5px;
+    width: 100%;
+    font-size: 12px;
+  }
+
+  span {
+    color: red;
+    font-size: 10px;
+  }
+}
+
+
+.input {
+  background: #1B2428;
+  color: #fff !important;
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  width: 100%;
+}

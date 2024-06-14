@@ -1,0 +1,118 @@
+.toast {
+  background: #CEA100;
+  font-size: 12px;
+}
+
+.stages {
+  width: 100%;
+
+  label {
+    color: #fff;
+    font-weight: 500;
+    margin: 0;
+    margin-bottom: 5px;
+    width: 100%;
+    font-size: 12px;
+  }
+
+  .buttonAdd {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    transition: background .3s;
+    border: none;
+    border-radius: 5px;
+    margin-top: 26px;
+
+    &:hover {
+      background: #1B2428;
+    }
+  }
+
+  .stagesItems {
+    width: 100%;
+    box-sizing: border-box;
+
+    .stageItemForm {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      position: relative;
+
+      input {
+        padding: 0;
+        color: #fff;
+        background: none;
+        border: none;
+        font-size: 12px;
+
+        &:hover {
+          outline: 2px solid #27363f;
+          border-radius: 5px;
+        }
+      }
+
+      .stageNumberForm {
+        input {
+          text-align: end;
+        }
+      }
+    }
+
+    .stageItem {
+      width: 100%;
+      padding: 10px;
+      background: #1B2428;
+      border-radius: 5px;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      margin: 10px 0;
+
+      p {
+        font-size: 12px;
+        font-weight: 400;
+        margin: 0;
+        color: #fff;
+      }
+
+      .stageNumber {
+        margin-left: auto;
+      }
+
+      .actions {
+        display: flex;
+        gap: 12px;
+
+        .actionButton {
+          border: none;
+          background: none;
+          outline: none;
+          width: 12px;
+          transition: all .3s;
+          animation: buttonAction .3s;
+
+          @keyframes buttonAction {
+            from {
+              transform: scale(0);
+            } to {
+              transform: scale(1);
+            }
+          }
+
+          &:hover {
+            filter: brightness(.8);
+          }
+
+          img {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

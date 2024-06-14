@@ -2,7 +2,7 @@ import { ITask } from "./ITask";
 
 export interface IStage {
   id: string;
-	idProject: string;
+	idProject?: string;
 	title: string;
 	stage: number;
 	tasks: ITask[];

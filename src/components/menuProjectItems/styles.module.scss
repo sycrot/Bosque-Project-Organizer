@@ -1,0 +1,23 @@
+.menuProjectItems {
+  width: 100%;
+  padding: 3px 2px;
+  height: 75vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar-thumb {
+    background: #27353C;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #13191C;
+  }
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-button {
+    opacity: 0;
+  }
+}

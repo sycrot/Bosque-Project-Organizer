@@ -1,0 +1,27 @@
+.button {
+  padding: 4px 30px;
+  border: none;
+  background: none;
+  border-radius: 5px;
+  transition: all .3s;
+
+  &:hover {
+    filter: brightness(.8);
+  }
+
+  p {
+    margin: 0;
+    color: #fff;
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  &.buttonDefault {
+    background: #13191C;
+    border: 1px solid #27353C;
+  }
+
+  &.buttonPrimary {
+    background: #E88D67;
+  }
+}

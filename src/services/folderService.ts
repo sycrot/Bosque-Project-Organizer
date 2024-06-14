@@ -1,8 +1,17 @@
 import { IFolder } from '@/types/IFolder';
 import { v4 as uuidv4 } from 'uuid';
 import { getLocalStorage, updateLocalStorage } from './storageService';
+import { ProjectService } from './projectService';
+import { IProject } from '@/types/IProject';
+import { setFolders } from './redux/folders/slice';
 
 export class FolderService {
+  private dispatch: any;
+
+  constructor(dispatch: any) {
+    this.dispatch = dispatch
+  }
+
   public addFolder(folder: IFolder): void {
     const localStg = getLocalStorage()
     const folders = localStg.folders
@@ -11,12 +20,14 @@ export class FolderService {
 
     const newFolder: IFolder = {
       ...folder,
+      items: [],
       created: created.toISOString(),
       id: uuidv4(),
     }
 
     folders.push(newFolder)
 
+    this.dispatch(setFolders(folders))
     updateLocalStorage(localStg)
   }
 
@@ -26,33 +37,57 @@ export class FolderService {
     return folder
   }
 
-  public getFolders() {
+  public getFolders(): any {
     const localStg = getLocalStorage()
     const folders: any[] = localStg.folders
 
-    return folders
+    this.dispatch(setFolders(folders))
   }
 
   public updateFolder(item: IFolder) {
     const localStg = getLocalStorage()
     const folders = localStg.folders
+    const folderIndex = folders.findIndex((f: IFolder) => f.id === item.id);
 
-    folders.map((v: IFolder) => {
-      if (v.id === item.id) {
-        v = item
-      }
-    })
+    if (folderIndex !== -1) folders[folderIndex] = item
 
+    this.dispatch(setFolders(folders))
     updateLocalStorage(localStg)
   }
 
-  public deleteFolder(id: string) {
+  public deleteFolder(item: IFolder) {
     const localStg = getLocalStorage()
     const folders = localStg.folders
-    const folder = folders.findIndex((v: IFolder) => v.id === id)
+    const folder = folders.findIndex((v: IFolder) => v.id === item.id)
 
     if (folder !== -1) folders.splice(folder, 1)
 
+    this.dispatch(setFolders(folders))
     updateLocalStorage(localStg)
+  }
+
+  public deleteProject(project: IProject) {
+    const localStg = getLocalStorage()
+    const folders = [...localStg.folders]
+    const folderIndex = folders.findIndex((f: IFolder) => f.id === project.idFolder)
+
+    if (folderIndex === -1) {
+      console.error('Folder not found');
+      return;
+    }
+
+    const projectIndex = folders[folderIndex].items.findIndex((p: IProject) => p.id === project.id)
+
+    if (projectIndex === -1) {
+      console.error('Project not found');
+      return;
+    }
+
+    folders[folderIndex].items.splice(projectIndex, 1);
+
+    console.log(folders)
+
+    updateLocalStorage({...localStg, folders })
+    this.dispatch(setFolders(localStg.folders))
   }
 }
