@@ -15,6 +15,7 @@ export default function MenuProjectItems(props: IMenuProjectItemsProps) {
 
   return (
     <div className={styles.menuProjectItems}>
+      {props.itemsToRender.length === 0 && <p className={styles.notFound}>Nenhum projeto ou pasta</p>}
       {sortItemsByCreatedDate(props.itemsToRender)?.map((item: any) => (
         item.stages ?
           <ProjectItem
