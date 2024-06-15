@@ -4,7 +4,7 @@ import styles from './styles.module.scss';
 import { useParams } from 'next/navigation';
 import { IProject } from '@/types/IProject';
 import { ProjectService } from '@/services/projectService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 import StageIcon from '@/assets/icons/stage.svg'
 import NewStageModal from '@/components/newStageModal';
@@ -16,6 +16,8 @@ export default function ProjectPage() {
   const projectService = new ProjectService(dispatch)
   const [currentProject, setCurrentProject] = React.useState<IProject>({ title: '', color: '', stages: [] })
   const [showNewStage, setShowNewStage] = React.useState(false)
+  const projects = useSelector((s: any) => s.projectsReducer)
+  const folders = useSelector((s: any) => s.foldersReducer)
 
   React.useEffect(() => {
     const getProject = () => {
@@ -27,7 +29,7 @@ export default function ProjectPage() {
     }
 
     getProject()
-  }, [id])
+  }, [id, projects, folders])
 
   const toggleShowNewStage = () => {
     setShowNewStage(!showNewStage)

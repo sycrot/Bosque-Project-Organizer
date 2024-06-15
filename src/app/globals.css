@@ -45,6 +45,14 @@
   color: #fff;
 }
 
+.toast-success {
+  background-color: #119904ea;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff;
+}
+
 p {
   margin: 0;
 }

@@ -4,7 +4,7 @@ export interface IModalProps {
   show: boolean,
   hide: () => void,
   content: React.ReactNode,
-  action: () => void,
+  action?: () => void,
   title: string;
   actionText: string;
   actionCancelText?: string;

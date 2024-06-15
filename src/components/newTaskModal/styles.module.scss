@@ -1,0 +1,52 @@
+.modalNewTask {
+  background: #13191C;
+  animation: modalAnimation .3s;
+  max-width: 460px;
+  margin: 0 auto;
+
+  @keyframes modalAnimation {
+    from {
+      transform: scale(0);
+    }
+
+    to {
+      transform: scale(1);
+    }
+  }
+
+  .header {
+    border: none;
+    padding: 20px 20px 0 20px;
+
+    .title {
+      font-size: 18px;
+      color: #ffffff;
+      margin-bottom: 0;
+      font-weight: bold;
+    }
+
+    .buttonClose {
+      margin-left: auto;
+      border: none;
+      background: none;
+      transition: all .3s;
+
+      &:hover {
+        filter: brightness(.8);
+      }
+    }
+  }
+
+  .body {
+    padding: 30px 20px 0 20px;
+    border: none;
+    color: #fff;
+  }
+
+  .footer {
+    padding: 30px 20px 20px 20px;
+    border: none;
+    gap: 12px;
+    justify-content: center;
+  }
+}

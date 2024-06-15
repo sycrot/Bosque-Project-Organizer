@@ -14,6 +14,7 @@ import ModalComponent from '@/components/commom/modal';
 import NewFolderModal from '@/components/newFolderModal';
 import NewProjectModal from '@/components/newProjectModal';
 import { IProject } from '@/types/IProject';
+import { useParams, useRouter } from 'next/navigation';
 
 export default function FolderItem(props: IFolderItemProps) {
   const [showDeleteModal, setShowDeleteModal] = React.useState(false)
@@ -21,6 +22,7 @@ export default function FolderItem(props: IFolderItemProps) {
   const [showNewProjectModal, setShowNewProjectModal] = React.useState(false)
   const dispatch = useDispatch()
   const folderService = new FolderService(dispatch)
+  const router = useRouter()
 
   const handleDeleteFolder = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -54,6 +56,7 @@ export default function FolderItem(props: IFolderItemProps) {
 
   const deleteFolder = () => {
     folderService.deleteFolder(props.folder)
+    if (window.location.href.includes('project')) router.push('/')
   }
 
   const projectInit: IProject = {
