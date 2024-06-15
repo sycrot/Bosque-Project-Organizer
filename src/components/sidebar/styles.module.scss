@@ -4,9 +4,9 @@
   background: #13191C;
   height: 100%;
   border-radius: 3px;
-  
+
   @media screen and (min-width: 720px) {
-    max-width: 340px;
+    max-width: 30%;
   }
 }
 
@@ -14,6 +14,7 @@
   @media screen and (max-width: 720px) {
     display: none;
   }
+
   background: #13191C;
   display: inline-block;
   height: 100%;

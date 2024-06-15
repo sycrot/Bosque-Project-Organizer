@@ -1,8 +1,9 @@
 .menuProjectItems {
+  display: block;
   width: 100%;
   padding: 3px 2px;
-  height: 75vh;
-  overflow-y: auto;
+  height: 100%;
+  overflow: auto;
   overflow-x: hidden;
 
   &::-webkit-scrollbar-thumb {

@@ -1,0 +1,31 @@
+.projectPage {
+  width: 100%;
+
+  .content {
+    h3 {
+      font-size: 24px;
+      font-weight: 400;
+      color: #fff;
+    }
+
+    .addStageButton {
+      background: none;
+      border: none;
+      color: #F3F7EC;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all .3s;
+      margin-bottom: 20px;
+      
+      p {
+        font-size: 12px;
+        margin: 0;
+      }
+
+      &:hover {
+        filter: brightness(.8);
+      }
+    }
+  }
+}

@@ -7,12 +7,12 @@ import { IProject } from "@/types/IProject";
 import { ProjectService } from "@/services/projectService";
 import { IFolder } from "@/types/IFolder";
 import NoContent from "@/components/noContent";
+import ContentPage from "@/components/contentPage";
 
 export default function Home() {
   const [projectsRender, setProjectsRender] = React.useState<IProject[]>([])
   const projects = useSelector((state: any) => state.projectsReducer)
   const folders = useSelector((state: any) => state.foldersReducer)
-  const dispatch = useDispatch()
 
   React.useEffect(() => {
     if (Array.isArray(projects) && Array.isArray(folders)) {
@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       {projectsRender.length > 0 ?
-        <div>copntent</div>
+        <ContentPage projects={projectsRender} />
         :
         <NoContent />
       }

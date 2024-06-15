@@ -9,6 +9,10 @@
   font-family: "Josefin Sans", sans-serif;
 }
 
+:root {
+  background-color: #13191C;
+}
+
 #bosque {
   padding: 10px;
   height: 100vh;
@@ -18,7 +22,7 @@
 }
 
 #bosqueContent {
-  width: 100%;
+  width: 70%;
   border-radius: 3px;
   background: #13191C;
   padding: 20px;
@@ -43,4 +47,16 @@
 
 p {
   margin: 0;
+}
+
+.slick-prev:before, .slick-next:before {
+  color: #1B2428 !important;
+}
+
+.slick-prev {
+  left: -20px !important;
+}
+
+.slick-next {
+  right: -20px !important;
 }

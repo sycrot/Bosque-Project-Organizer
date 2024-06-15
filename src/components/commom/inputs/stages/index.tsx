@@ -77,7 +77,7 @@ export default function Stages(props: IStageProps) {
       title: values.stage,
       stage: values.level,
       tasks: [],
-      icon: values.icon
+      icon: values.icon,
     }
 
     newStage.push(stage)

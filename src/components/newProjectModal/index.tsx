@@ -17,6 +17,7 @@ import toast, { toastConfig } from 'react-simple-toasts';
 import { ProjectService } from '@/services/projectService';
 import { IProject } from '@/types/IProject';
 import { useDispatch, useSelector } from 'react-redux';
+import { getRandomColor } from '@/utils/util';
 
 toastConfig({ theme: 'dark' });
 
@@ -35,9 +36,20 @@ export default function NewProjectModal(props: INewProjectModalProps) {
   const folders = useSelector((state: any) => state.foldersReducer)
   const project = props.project ?? undefined
 
+  const getColor = () => {
+    const color = getRandomColor()
+
+    if (project) {
+      if (project.color && project.color !== '') return project.color
+      else return color
+    } else {
+      return color
+    }
+  }
+
   const formInitialValues = {
     title: project ? project.title : '',
-    color: project ? project.color : '#C56B02',
+    color: getColor(),
     folderId: project ? project.idFolder ?? '' : '',
     stages: project ? project.stages : []
   }
@@ -59,6 +71,7 @@ export default function NewProjectModal(props: INewProjectModalProps) {
   }, [folders])
 
   const onSubmit = (values: any) => {
+    console.log(values.color)
     if (values.title === '') {
       toast('O campo Título é necessário', { position: 'center', zIndex: 1200, theme: 'info', className: 'toast-warning' })
       return
@@ -99,14 +112,14 @@ export default function NewProjectModal(props: INewProjectModalProps) {
           <Form>
             <Modal.Body className={styles.body}>
               <Row>
-                <Col sm={10} md={6}>
+                <Col xs={10} md={6}>
                   <InputDefault
                     name={'title'}
                     type={'text'}
                     label={'Título'}
                   />
                 </Col>
-                <Col sm={2} md={1} className={styles.colColor}>
+                <Col xs={2} md={1} className={styles.colColor}>
                   <ColorPicker
                     color={values.color}
                     onChangeComplete={(color: any) => setFieldValue('color', color.hex)}

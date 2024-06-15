@@ -13,7 +13,7 @@ export default function IconPicker(props: IIconPickerProps) {
 
   return (
     <>
-      {props.label !== '' && <label className={styles.label}>{props.label}</label>}
+      {props.label !== '' && <div className={styles.labelContainer}><label className={styles.label}>{props.label}</label></div>}
       <div className={`${props.noPadding ? styles.noPadding : ''} ${styles.iconPicker} ${showIcons ? styles.arrowShow : ''}`} style={props.style}>
         <button type="button" className={`${styles.button} ${showIcons ? styles.buttonShow : ''}`} onClick={toggleShowIcons}><Icons iconName={props.value} /></button>
         {showIcons &&

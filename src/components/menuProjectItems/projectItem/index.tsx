@@ -49,7 +49,7 @@ export default function ProjectItem(props: IProjectItemProps) {
 
   return (
     <>
-      <Link href="/teste" className={styles.projectItem} onClick={props.onClick}>
+      <Link href={`/project/${props.project.id}`} className={styles.projectItem} onClick={props.onClick}>
         <span
           className={styles.projectColor}
           style={{ background: props.project.color ?? '#C56B02' }}

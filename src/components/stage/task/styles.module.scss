@@ -1,0 +1,83 @@
+.task {
+  width: 100%;
+  padding: 4px 8px;
+  border-radius: 3px;
+  transition: background .4s;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 35px;
+
+  &:hover {
+    background: #1B2428;
+  }
+
+  p {
+    color: #fff;
+    font-weight: 400;
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 6px;
+
+    button {
+      display: flex;
+      width: 26px;
+      height: 26px;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      background: none;
+      padding: 0;
+      transition: all .3s;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+
+      &:hover {
+        filter: brightness(.8);
+      }
+    }
+  }
+
+  .check {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    border: none;
+    background: none;
+    padding: 0;
+    transition: all .3s;
+    position: relative;
+    margin-left: 6px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      margin-left: 6px;
+    }
+
+    &:hover {
+      filter: brightness(.8);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 3px;
+      height: 16px;
+      background: #2b3a41;
+      border-radius: 5px;
+      color: #1B2428;
+      margin: 6px;
+      font-size: 0;
+      left: -12px;
+    }
+  }
+}

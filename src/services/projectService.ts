@@ -29,7 +29,15 @@ export class ProjectService {
     const newProject: IProject = {
       ...project,
       id: uuidv4(),
-      created: created.toISOString()
+      created: created.toISOString(),
+      lastVisited: created.toISOString()
+    }
+
+    if (newProject.stages) {
+      newProject.stages = newProject.stages.map(s => ({
+        ...s,
+        idProject: newProject.id
+      }));
     }
 
     projects.push(newProject)
@@ -46,9 +54,17 @@ export class ProjectService {
     const newProject: IProject = {
       ...project,
       id: uuidv4(),
-      created: created.toISOString()
+      created: created.toISOString(),
+      lastVisited: created.toISOString(),
     }
 
+    if (newProject.stages) {
+      newProject.stages = newProject.stages.map(s => ({
+        ...s,
+        idProject: newProject.id
+      }));
+    }
+    
     folder.items.push(newProject)
 
     this.dispatch(setFolders(localStg.folders))
@@ -79,9 +95,17 @@ export class ProjectService {
   }
 
   public getProject(id: string) {
-    const project = this.getProjects().filter((v: IProject) => v.id === id)[0]
+    const folderService = new FolderService(this.dispatch)
+    const localStg = getLocalStorage()
+    const projects = localStg.projects
+    const project = projects.filter((v: IProject) => v.id === id)
+    const projectInFolder = folderService.getProjects().filter((p: IProject) => p.id === id)
 
-    return project
+    if (project.length > 0) {
+      return project[0]
+    } else {
+      return projectInFolder[0]
+    }
   }
 
   public getProjects(): any {
@@ -89,6 +113,7 @@ export class ProjectService {
     const projects: any[] = localStg.projects
 
     this.dispatch(setProjects(projects))
+    return projects;
   }
 
   public updateProject(item: IProject) {

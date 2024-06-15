@@ -42,6 +42,19 @@ export class FolderService {
     const folders: any[] = localStg.folders
 
     this.dispatch(setFolders(folders))
+    return folders
+  }
+
+  public getProjects(): any {
+    const localStg = getLocalStorage()
+    const folders = localStg.folders
+    const projects: IProject[] = []
+
+    folders.map((f: IFolder) => {
+      f.items?.map(p => projects.push(p))
+    })
+
+    return projects;
   }
 
   public updateFolder(item: IFolder) {
