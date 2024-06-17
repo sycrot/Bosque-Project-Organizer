@@ -9,6 +9,9 @@ import Image from 'next/image';
 import StageIcon from '@/assets/icons/stage.svg'
 import NewStageModal from '@/components/newStageModal';
 import Stage from '@/components/stage';
+import { sortByLevel } from '@/utils/util';
+import EditIcon from '@/assets/icons/edit-icon.svg'
+import NewProjectModal from '@/components/newProjectModal';
 
 export default function ProjectPage() {
   const { id } = useParams()
@@ -16,6 +19,7 @@ export default function ProjectPage() {
   const projectService = new ProjectService(dispatch)
   const [currentProject, setCurrentProject] = React.useState<IProject>({ title: '', color: '', stages: [] })
   const [showNewStage, setShowNewStage] = React.useState(false)
+  const [showEditProject, setShowEditProject] = React.useState(false)
   const projects = useSelector((s: any) => s.projectsReducer)
   const folders = useSelector((s: any) => s.foldersReducer)
 
@@ -23,9 +27,12 @@ export default function ProjectPage() {
     const getProject = () => {
       const project = projectService.getProject(id.toString())
 
-      console.log(project)
+      if (project) {
+        setCurrentProject(project)
+      } else {
+        window.location.assign('/')
+      }
 
-      setCurrentProject(project)
     }
 
     getProject()
@@ -35,14 +42,22 @@ export default function ProjectPage() {
     setShowNewStage(!showNewStage)
   }
 
+  const toggleShowEditProject = () => {
+    setShowEditProject(!showEditProject)
+  }
+
   return (
     <section className={styles.projectPage}>
       <div className={styles.content}>
-        <h3>{currentProject.title}</h3>
+        <div className={styles.projectHeader}>
+          <h3>{currentProject.title}</h3>
+          <button onClick={toggleShowEditProject}><Image src={EditIcon} alt="Editar" /></button>
+        </div>
+
         <button className={styles.addStageButton} onClick={toggleShowNewStage}><Image src={StageIcon} alt="Adicionar estágio" /><p>Adicionar estágio</p></button>
 
-        {currentProject.stages.map(s => (
-          <Stage key={s.id} stage={s} />
+        {sortByLevel(currentProject.stages).map(s => (
+          <Stage key={s.id} stage={s} project={currentProject} />
         ))}
       </div>
 
@@ -50,6 +65,12 @@ export default function ProjectPage() {
         show={showNewStage}
         hide={toggleShowNewStage}
         project={currentProject ?? []}
+      />
+
+      <NewProjectModal
+        show={showEditProject}
+        handleClose={toggleShowEditProject}
+        project={currentProject}
       />
     </section>
   )

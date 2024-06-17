@@ -1,6 +1,5 @@
 "use client"
 import * as React from 'react'
-import Link from "next/link";
 import { IProjectItemProps } from "./props";
 import styles from './styles.module.scss'
 import EditIcon from '@/assets/icons/edit-icon.svg'
@@ -8,12 +7,12 @@ import Image from "next/image";
 import MenuDots from '@/assets/icons/menu-dots-icon.svg'
 import { IAction } from "@/types/IAction";
 import DropdownActions from "@/components/commom/dropdownActions";
-import { Modal } from 'react-bootstrap';
 import ModalComponent from '@/components/commom/modal';
 import { ProjectService } from '@/services/projectService';
 import { useDispatch } from 'react-redux';
 import { FolderService } from '@/services/folderService';
 import NewProjectModal from '@/components/newProjectModal';
+import { useRouter } from 'next/navigation';
 
 export default function ProjectItem(props: IProjectItemProps) {
   const [showDeleteModal, setShowDeleteModal] = React.useState(false)
@@ -21,6 +20,7 @@ export default function ProjectItem(props: IProjectItemProps) {
   const dispatch = useDispatch()
   const projectService = new ProjectService(dispatch)
   const folderService = new FolderService(dispatch)
+  const router = useRouter()
 
   const handleDeleteProject = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -45,11 +45,18 @@ export default function ProjectItem(props: IProjectItemProps) {
     } else {
       projectService.deleteProject(props.project)
     }
+
+    if (window.location.href.includes(`${props.project.id}`)) window.location.assign('/')
+  }
+
+  const handleLastVisited = () => {
+    projectService.updateLastVisited(props.project)
+    router.push(`/project/${props.project.id}`)
   }
 
   return (
     <>
-      <Link href={`/project/${props.project.id}`} className={styles.projectItem} onClick={props.onClick}>
+      <div className={styles.projectItem} onClick={handleLastVisited}>
         <span
           className={styles.projectColor}
           style={{ background: props.project.color ?? '#C56B02' }}
@@ -58,13 +65,14 @@ export default function ProjectItem(props: IProjectItemProps) {
         <div className={styles.projectActions}>
           <button className={styles.actionButton} onClick={e => {
             e.preventDefault()
+            e.stopPropagation()
             toggleShowUpdateModal()
           }}>
             <Image src={EditIcon} alt="Editar projeto" />
           </button>
           <DropdownActions actions={actions} buttonContent={<Image src={MenuDots} alt="Opções" />} />
         </div>
-      </Link>
+      </div>
       <NewProjectModal
         show={showUpdateModal}
         handleClose={toggleShowUpdateModal}

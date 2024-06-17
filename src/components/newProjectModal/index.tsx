@@ -18,6 +18,7 @@ import { ProjectService } from '@/services/projectService';
 import { IProject } from '@/types/IProject';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRandomColor } from '@/utils/util';
+import { v4 as uuidv4 } from 'uuid';
 
 toastConfig({ theme: 'dark' });
 
@@ -71,7 +72,6 @@ export default function NewProjectModal(props: INewProjectModalProps) {
   }, [folders])
 
   const onSubmit = (values: any) => {
-    console.log(values.color)
     if (values.title === '') {
       toast('O campo Título é necessário', { position: 'center', zIndex: 1200, theme: 'info', className: 'toast-warning' })
       return
@@ -95,6 +95,13 @@ export default function NewProjectModal(props: INewProjectModalProps) {
 
     props.handleClose()
   }
+
+  const defaultStages: any = [
+    {id: uuidv4(), icon: 'Close', title: 'Não iniciado', stage: 0, tasks: []},
+    {id: uuidv4(), icon: 'Loading', title: 'Em andamento', stage: 1, tasks: []},
+    {id: uuidv4(), icon: 'Config', title: 'Em teste', stage: 2, tasks: []},
+    {id: uuidv4(), icon: 'Finish', title: 'Concluído', stage: 3, tasks: []},
+  ]
 
   return (
     <Modal show={props.show} onHide={props.handleClose} centered contentClassName={styles.newProjectModal} animation>
@@ -137,6 +144,11 @@ export default function NewProjectModal(props: INewProjectModalProps) {
               </Row>
               <Row style={{ justifyContent: 'space-between' }} className={styles.stages}>
                 <h6>Estágios</h6>
+                <button type="button" onClick={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  setFieldValue('stages', defaultStages)}
+                  }>Estágios padrão</button>
               </Row>
               <Stages value={values.stages} onChange={(e) => setFieldValue('stages', e)} />
             </Modal.Body>
@@ -149,6 +161,7 @@ export default function NewProjectModal(props: INewProjectModalProps) {
               <ButtonDefault
                 text={props.actionText ?? 'Adicionar'}
                 variant={'primary'}
+                type='submit'
                 onClick={() => onSubmit(values)}
               />
             </Modal.Footer>

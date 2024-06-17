@@ -13,13 +13,15 @@ export default function DropdownActions(props: IDropdownActionsProps) {
 
   return (
     <div className={styles.dropdownActions}>
-      <button className={styles.actionButton} onClick={toggleShowActions}>{props.buttonContent}</button>
+      <button className={styles.actionButton} style={props.buttonActionStyle} onClick={toggleShowActions}>{props.buttonContent}</button>
       {showActions &&
-        <div className={styles.actions}>
+        <div className={styles.actions} onMouseLeave={toggleShowActions}>
           {props.actions.map((v, index) => (
             <button
               key={index}
               onClick={e => {
+                e.preventDefault()
+                e.stopPropagation()
                 v.function(e)
                 setShowActions(false)
               }}>

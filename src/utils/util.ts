@@ -1,3 +1,5 @@
+import { IStage } from "@/types/IStage";
+
 export function sortItemsByCreatedDate(items: any[]): any[] {
   return items?.slice().sort((a, b) => {
     const dateA = new Date(a.created || 0).getTime();
@@ -22,4 +24,10 @@ export function getRandomColor() {
   const colorHex = `#${aleatoryNumber.toString(16).padStart(6, '0')}`;
   
   return colorHex;
+}
+
+export function sortByLevel(items: IStage[]) {
+  return items?.slice().sort((a: IStage, b: IStage) => {
+    return a.stage - b.stage
+  })
 }

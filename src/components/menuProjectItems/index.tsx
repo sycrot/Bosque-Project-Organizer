@@ -7,12 +7,6 @@ import { sortItemsByCreatedDate } from '@/utils/util';
 import FolderItem from './folderItem';
 
 export default function MenuProjectItems(props: IMenuProjectItemsProps) {
-  const [openFolder, setOpenFolder] = React.useState(false)
-
-  const handleOpenFolder = () => {
-    setOpenFolder(!openFolder)
-  }
-
   return (
     <div className={styles.menuProjectItems}>
       {props.itemsToRender.length === 0 && <p className={styles.notFound}>Nenhum projeto ou pasta</p>}
@@ -26,8 +20,6 @@ export default function MenuProjectItems(props: IMenuProjectItemsProps) {
           <FolderItem
             key={item.id}
             folder={item}
-            open={openFolder}
-            onClick={handleOpenFolder}
           />
       ))}
     </div>

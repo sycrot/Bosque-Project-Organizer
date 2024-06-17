@@ -13,6 +13,8 @@ import { TaskService } from '@/services/taskService';
 import DropdownActions from '../commom/dropdownActions';
 import { IAction } from '@/types/IAction';
 import ModalComponent from '../commom/modal';
+import { StageService } from '@/services/stageService';
+import NewStageModal from '../newStageModal';
 
 export default function Stage(props: IStageProps) {
   const [showNewTask, setShowNewTask] = React.useState(false)
@@ -21,7 +23,9 @@ export default function Stage(props: IStageProps) {
   const [tasks, setTasks] = React.useState<ITask[]>()
   const dispatch = useDispatch()
   const tasksService = new TaskService(dispatch)
+  const stageService = new StageService(dispatch)
   const [showDeleteModal, setShowDeleteModal] = React.useState(false)
+  const [showUpdateModal, setShowUpdateModal] = React.useState(false)
 
   const toggleShowNewTask = () => {
     setShowNewTask(!showNewTask)
@@ -30,7 +34,7 @@ export default function Stage(props: IStageProps) {
   React.useEffect(() => {
     const getTasks = () => {
       const tasks = tasksService.getTasks(props.stage)
-      console.log(tasks)
+
       setTasks(tasks)
     }
 
@@ -41,17 +45,28 @@ export default function Stage(props: IStageProps) {
     setShowDeleteModal(!showDeleteModal)
   }
 
-  const handleDeleteProject = (e: React.MouseEvent) => {
+  const toggleShowUpdateModal = () => {
+    setShowUpdateModal(!showUpdateModal)
+  }
+
+  const handleDeleteStage = (e: React.MouseEvent) => {
     e.preventDefault()
     toggleShowDeleteModal()
   }
 
+  const handleUpdateStage = (e: React.MouseEvent) => {
+    e.preventDefault()
+    toggleShowUpdateModal()
+  }
+
   const actions: IAction[] = [
-    { title: 'Excluir', function: handleDeleteProject }
+    { title: 'Editar', function: handleUpdateStage },
+    { title: 'Excluir', function: handleDeleteStage },
   ]
 
   const deleteStage = () => {
-
+    stageService.removeStage(props.stage)
+    toggleShowDeleteModal()
   }
 
   return (
@@ -62,8 +77,8 @@ export default function Stage(props: IStageProps) {
           <h4>{props.stage.title}</h4>
         </div>
         <div className={styles.actionsHeader}>
-          <button onClick={toggleShowNewTask}><Image src={AddIcon} alt="Adicionar" /></button>
-          <DropdownActions actions={actions} buttonContent={<Image src={MenuIcon} alt="Opções" />} />
+          <button onClick={toggleShowNewTask} className={styles.buttonAdd}><Image src={AddIcon} alt="Adicionar" /></button>
+          <DropdownActions actions={actions} buttonContent={<Image src={MenuIcon} alt="Opções" />} buttonActionStyle={{ height: '18px', display: 'flex', alignItems: 'center' }} />
         </div>
       </div>
       <div className={styles.content}>
@@ -85,10 +100,17 @@ export default function Stage(props: IStageProps) {
       <ModalComponent
         show={showDeleteModal}
         hide={toggleShowDeleteModal}
-        content={<p>Deseja realmente excluir <b>"{props.stage.title}"</b>?</p>}
+        content={<p>Deseja realmente excluir <b>"{props.stage.title}"</b> e todo o seu conteúdo?</p>}
         action={deleteStage}
         title={'Excluir estágio?'}
         actionText='Excluir'
+      />
+
+      <NewStageModal
+        project={props.project}
+        show={showUpdateModal}
+        hide={toggleShowUpdateModal}
+        stage={props.stage}
       />
     </div>
   )

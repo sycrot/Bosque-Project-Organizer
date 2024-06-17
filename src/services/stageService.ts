@@ -24,7 +24,9 @@ export class StageService {
       return
     }
 
-    const stages = projects[0].stages
+    const stages = project[0].stages
+    console.log(project[0])
+
     const newStage: IStage = {
       ...stage,
       id: uuidv4(),
@@ -80,35 +82,99 @@ export class StageService {
 
         if (projectInFolder) return projectInFolder[0].stages
       })
-      
+
       return stages[0]
     }
 
-    const stages: IStage[] = project.stages
+    const stages: IStage[] = project[0].stages
 
     return stages
   }
 
   public updateStage(stage: IStage): void {
     const localStg = getLocalStorage()
-    const stages = localStg.projects.stages
+    const projects = localStg.projects
+    const project = projects.findIndex((p: IProject) => p.id === stage.idProject);
 
-    stages.map((s: IStage) => {
-      if (s.id === stage.id) {
-        s = stage
+    if (project === -1) {
+      this.updateStageFromFolder(stage)
+      return
+    }
+
+    const currentProject = projects[project]
+    const projectStage = currentProject.stages.findIndex((s: IStage) => s.id === stage.id)
+
+    if (projectStage !== -1) {
+      currentProject.stages[projectStage] = stage
+
+      projects[project] = currentProject
+
+      this.dispatch(setProjects(projects))
+      updateLocalStorage(localStg)
+    }
+
+  }
+
+  public updateStageFromFolder(stage: IStage) {
+    const localStg = getLocalStorage()
+    const folders = localStg.folders
+    const projects = localStg.projects
+
+    folders.map((f: IFolder) => {
+      const projectsInFolder = f.items ?? []
+      const project = f.items?.findIndex(p => p.id === stage.idProject)
+
+      const currentProject = projectsInFolder[project ?? -1]
+      const projectStage = currentProject.stages.findIndex((s: IStage) => s.id === stage.id)
+
+      if (projectStage !== -1) {
+        currentProject.stages[projectStage] = stage
+
+        projects[project ?? -1] = currentProject
+
+        this.dispatch(setProjects(projects))
+        updateLocalStorage(localStg)
       }
     })
+  }
 
+  public removeStage(stage: IStage): void {
+    const localStg = getLocalStorage()
+    const projects = localStg.projects
+    const project = projects.filter((p: IProject) => p.id === stage.idProject)
+
+    if (project.length === 0) {
+      this.removeStageFromFolder(stage)
+      return
+    }
+
+    const projectStages = project[0].stages
+    const projectStage = projectStages.findIndex((s: IStage) => s.id === stage.id)
+
+    if (projectStage !== -1) projectStages.splice(projectStage, 1)
+
+    this.dispatch(setProjects(projects))
     updateLocalStorage(localStg)
   }
 
-  public removeStage(id: string): void {
+  public removeStageFromFolder(stage: IStage) {
     const localStg = getLocalStorage()
-    const stages = localStg.projects.stages
-    const stage = stages.findIndex((s: IStage) => s.id === id)
+    const folders = localStg.folders
+    const projects = localStg.projects
 
-    if (stage !== -1) stages.splice(stage, 1)
+    folders.map((f: IFolder) => {
+      const project = f.items?.filter(p => p.id === stage.idProject)
 
-    updateLocalStorage(localStg)
+      if (project) {
+        const projectStages = project[0].stages
+        const projectStage = projectStages.findIndex((s: IStage) => s.id === stage.id)
+
+        if (projectStage !== -1) projectStages.splice(projectStage, 1)
+
+        this.dispatch(setProjects(folders))
+        this.dispatch(setProjects(projects))
+        updateLocalStorage(localStg)
+      }
+    })
   }
 }

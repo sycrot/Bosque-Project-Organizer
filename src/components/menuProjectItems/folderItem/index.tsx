@@ -23,6 +23,11 @@ export default function FolderItem(props: IFolderItemProps) {
   const dispatch = useDispatch()
   const folderService = new FolderService(dispatch)
   const router = useRouter()
+  const [openFolder, setOpenFolder] = React.useState(false)
+
+  const toggleOpenFolder = () => {
+    setOpenFolder(!openFolder)
+  }
 
   const handleDeleteFolder = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -56,7 +61,6 @@ export default function FolderItem(props: IFolderItemProps) {
 
   const deleteFolder = () => {
     folderService.deleteFolder(props.folder)
-    if (window.location.href.includes('project')) router.push('/')
   }
 
   const projectInit: IProject = {
@@ -71,7 +75,7 @@ export default function FolderItem(props: IFolderItemProps) {
       <div
         className={`${styles.folderItem}`}
       >
-        <div className={`${styles.folderItemHeader} ${props.open ? styles.collapsed : ''}`} onClick={props.onClick}>
+        <div className={`${styles.folderItemHeader} ${openFolder ? styles.collapsed : ''}`} onClick={toggleOpenFolder}>
           <p>{props.folder.title}</p>
           <div className={styles.projectActions}>
             <button className={styles.actionButton} onClick={toggleShowNewProjectModal}><Image src={AddProject} alt="Adicionar projeto" /></button>
@@ -81,14 +85,18 @@ export default function FolderItem(props: IFolderItemProps) {
             />
           </div>
         </div>
-        {props.open &&
+        {openFolder &&
           <div className={styles.projectItems}>
-            {sortItemsByCreatedDate(props.folder.items ?? [])?.map(p => (
-              <ProjectItem
-                key={p.id}
-                project={p}
-              />
-            ))}
+            {props.folder.items && props.folder.items.length > 0 ?
+              sortItemsByCreatedDate(props.folder.items ?? [])?.map(p => (
+                <ProjectItem
+                  key={p.id}
+                  project={p}
+                />
+              ))
+              :
+              <span className={styles.dontProjects}>Nenhum um projeto nesta pasta</span>
+            }
           </div>
         }
       </div>

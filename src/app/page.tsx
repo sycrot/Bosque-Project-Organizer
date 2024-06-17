@@ -8,6 +8,7 @@ import { ProjectService } from "@/services/projectService";
 import { IFolder } from "@/types/IFolder";
 import NoContent from "@/components/noContent";
 import ContentPage from "@/components/contentPage";
+import { createLists, deleteLastVisitedHome, getLocalStorage, lastVisitedHome } from "@/services/storageService";
 
 export default function Home() {
   const [projectsRender, setProjectsRender] = React.useState<IProject[]>([])
@@ -15,6 +16,9 @@ export default function Home() {
   const folders = useSelector((state: any) => state.foldersReducer)
 
   React.useEffect(() => {
+    const localStg = getLocalStorage()
+    !localStg && createLists()
+
     if (Array.isArray(projects) && Array.isArray(folders)) {
       const projectsInFolder: IProject[] = []
 
@@ -25,6 +29,28 @@ export default function Home() {
       })
 
       const concat: IProject[] = projects.concat(projectsInFolder)
+
+      const localStg = getLocalStorage()
+      const lastVisited = localStg.homeLastVisited
+
+      if (lastVisited !== "") {
+        const lastDate = new Date(lastVisited)
+        
+        concat.map(p => {
+          const date = new Date(p.lastVisited ?? '')
+  
+          if (date > lastDate) {
+            deleteLastVisitedHome()
+            window.location.assign(`/project/${p.id}`)
+          } else {
+            lastVisitedHome()
+          }
+        })
+      } else {
+        lastVisitedHome()
+      }
+      
+
       setProjectsRender(concat)
     }
   }, [projects, folders])

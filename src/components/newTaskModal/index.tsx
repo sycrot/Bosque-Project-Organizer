@@ -36,7 +36,7 @@ export default function NewTaskModal(props: INewTaskModal) {
       const options: any = []
       const stages: IStage[] = stageService.getStages(props.stage.idProject ?? '')
 
-      stages.map(s => {
+      stages?.map(s => {
         options.push({ value: s.id,  label: <span><Icons iconName={s.icon} /> {s.title}</span> })
       })
 

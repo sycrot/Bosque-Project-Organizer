@@ -24,16 +24,16 @@ const validationSchema = yup.object().shape({
   level: yup.number().min(0),
 })
 
-const formInitialValues = {
-  icon: 'Finish',
-  stage: '',
-  level: 0,
-}
-
 export default function NewStageModal(props: INewStageModalProps) {
-  const [formInitialStage, setFormInitialStage] = React.useState<any>()
   const dispatch = useDispatch()
   const stageService = new StageService(dispatch)
+  const stage = props.stage ?? undefined
+
+  const formInitialValues = {
+    icon: stage ? stage.icon : '',
+    stage: stage ? stage.title : '',
+    level: stage ? stage.stage : 0,
+  }
 
   const onSubmit = (values: any) => {
     const filterLevel = props.project.stages.filter((v: any) => v.stage === values.level) 
@@ -48,22 +48,28 @@ export default function NewStageModal(props: INewStageModalProps) {
       return
     }
 
-    if (filterLevel.length > 0) {
+    if (!stage && filterLevel.length > 0) {
       toast('Já existe um estágio com esse nível', { position: 'center', zIndex: 1200, theme: 'info', className: 'toast-warning' })
       return
     }
 
     const newStage: IStage = {
-      id: '',
+      id: stage ? stage.id : '',
       title: values.stage,
       stage: values.level,
-      tasks: [],
+      tasks: stage ? stage.tasks : [],
       icon: values.icon,
       idProject: props.project.id,
     }
 
-    stageService.addStage(newStage)
+    if (stage) {
+      stageService.updateStage(newStage)
+    } else {
+      stageService.addStage(newStage)
+    }
+    
     props.hide()
+    return
   }
 
   return (
@@ -84,7 +90,7 @@ export default function NewStageModal(props: INewStageModalProps) {
             <Form>
               <Modal.Body className={styles.body}>
                 <Row>
-                  <Col sm={2}>
+                  <Col xs={2}>
                     <IconPicker
                       value={values.icon}
                       onChange={(e: any) => setFieldValue('icon', e)}
@@ -92,7 +98,7 @@ export default function NewStageModal(props: INewStageModalProps) {
                       style={{ zIndex: '999' }}
                     />
                   </Col>
-                  <Col sm={6}>
+                  <Col xs={6}>
 
                     <InputDefault
                       name={'stage'}
@@ -100,7 +106,7 @@ export default function NewStageModal(props: INewStageModalProps) {
                       label={'Estágio'}
                     />
                   </Col>
-                  <Col sm={4} style={{ position: 'relative' }}>
+                  <Col xs={4} style={{ position: 'relative' }}>
                     <InputDefault
                       name={'level'}
                       type={'number'}
@@ -116,7 +122,7 @@ export default function NewStageModal(props: INewStageModalProps) {
                   onClick={props.hide}
                 />
                 <ButtonDefault
-                  text={'Adicionar'}
+                  text={stage ? 'Atualizar' : 'Adicionar'}
                   variant={'primary'}
                   onClick={() => onSubmit(values)}
                 />

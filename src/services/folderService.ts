@@ -39,20 +39,43 @@ export class FolderService {
 
   public getFolders(): any {
     const localStg = getLocalStorage()
-    const folders: any[] = localStg.folders
+    if (localStg) {
+      const folders: any[] = localStg.folders
 
-    this.dispatch(setFolders(folders))
-    return folders
+      this.dispatch(setFolders(folders))
+      return folders
+    }
+  }
+
+  public getProject(id: string) {
+    const project = this.getProjects().filter((p: IProject) => p.id === id)
+
+    return project
   }
 
   public getProjects(): any {
     const localStg = getLocalStorage()
+    if (localStg) {
+      const folders = localStg.folders
+      const projects: IProject[] = []
+  
+      folders.map((f: IFolder) => {
+        f.items?.map(p => projects.push(p))
+      })
+  
+      return projects;
+    }
+  }
+
+  public getProjectsById(item: IFolder) {
+    const localStg = getLocalStorage()
     const folders = localStg.folders
+    const folder = folders.filter((f: IFolder) => f.id === item.id)
     const projects: IProject[] = []
 
-    folders.map((f: IFolder) => {
-      f.items?.map(p => projects.push(p))
-    })
+    folder.items?.map((p: IProject) => projects.push(p))
+
+    console.log(projects)
 
     return projects;
   }
@@ -97,8 +120,6 @@ export class FolderService {
     }
 
     folders[folderIndex].items.splice(projectIndex, 1);
-
-    console.log(folders)
 
     updateLocalStorage({...localStg, folders })
     this.dispatch(setFolders(localStg.folders))
