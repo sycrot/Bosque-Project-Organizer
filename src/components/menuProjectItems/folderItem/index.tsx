@@ -22,8 +22,20 @@ export default function FolderItem(props: IFolderItemProps) {
   const [showNewProjectModal, setShowNewProjectModal] = React.useState(false)
   const dispatch = useDispatch()
   const folderService = new FolderService(dispatch)
-  const router = useRouter()
   const [openFolder, setOpenFolder] = React.useState(false)
+  const { id } = useParams()
+
+  React.useEffect(() => {
+    const projects = folderService.getProjectsById(props.folder)
+
+    const index = projects.findIndex(p => p.id === id)
+
+    if (index !== -1) {
+      setOpenFolder(true)
+    } else {
+      setOpenFolder(false)
+    }
+  }, [id])
 
   const toggleOpenFolder = () => {
     setOpenFolder(!openFolder)

@@ -70,12 +70,10 @@ export class FolderService {
   public getProjectsById(item: IFolder) {
     const localStg = getLocalStorage()
     const folders = localStg.folders
-    const folder = folders.filter((f: IFolder) => f.id === item.id)
+    const folder = folders.findIndex((f: IFolder) => f.id === item.id)
     const projects: IProject[] = []
-
-    folder.items?.map((p: IProject) => projects.push(p))
-
-    console.log(projects)
+    
+    folders[folder].items?.map((p: IProject) => projects.push(p))
 
     return projects;
   }

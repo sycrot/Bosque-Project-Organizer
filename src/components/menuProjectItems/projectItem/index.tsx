@@ -12,15 +12,25 @@ import { ProjectService } from '@/services/projectService';
 import { useDispatch } from 'react-redux';
 import { FolderService } from '@/services/folderService';
 import NewProjectModal from '@/components/newProjectModal';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 export default function ProjectItem(props: IProjectItemProps) {
   const [showDeleteModal, setShowDeleteModal] = React.useState(false)
   const [showUpdateModal, setShowUpdateModal] = React.useState(false)
+  const [selected, setSelected] = React.useState(false)
   const dispatch = useDispatch()
   const projectService = new ProjectService(dispatch)
   const folderService = new FolderService(dispatch)
   const router = useRouter()
+  const { id } = useParams()
+
+  React.useEffect(() => {
+    if (id && props.project.id === id) {
+      setSelected(true)
+    } else {
+      setSelected(false)
+    }
+  }, [id])
 
   const handleDeleteProject = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -56,7 +66,7 @@ export default function ProjectItem(props: IProjectItemProps) {
 
   return (
     <>
-      <div className={styles.projectItem} onClick={handleLastVisited}>
+      <div className={`${styles.projectItem} ${selected ? styles.selected : ''}`} onClick={handleLastVisited}>
         <span
           className={styles.projectColor}
           style={{ background: props.project.color ?? '#C56B02' }}

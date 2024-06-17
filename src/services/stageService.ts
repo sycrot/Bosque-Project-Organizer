@@ -95,7 +95,7 @@ export class StageService {
     const localStg = getLocalStorage()
     const projects = localStg.projects
     const project = projects.findIndex((p: IProject) => p.id === stage.idProject);
-
+    console.log(project)
     if (project === -1) {
       this.updateStageFromFolder(stage)
       return
@@ -130,8 +130,9 @@ export class StageService {
       if (projectStage !== -1) {
         currentProject.stages[projectStage] = stage
 
-        projects[project ?? -1] = currentProject
+        projectsInFolder[project ?? -1] = currentProject
 
+        this.dispatch(setFolders(folders))
         this.dispatch(setProjects(projects))
         updateLocalStorage(localStg)
       }

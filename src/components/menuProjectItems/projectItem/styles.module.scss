@@ -9,6 +9,10 @@
   text-decoration: none;
   margin: 2px 0;
 
+  &.selected {
+    background: #1B2428;
+  }
+
   &:hover {
     background: #1B2428;
   }
