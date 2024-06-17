@@ -72,21 +72,22 @@ export class StageService {
   public getStages(idProject: string) {
     const localStg = getLocalStorage()
     const projects = localStg.projects
-    const project = projects.filter((p: IProject) => p.id === idProject)
+    const project = projects.findIndex((p: IProject) => p.id === idProject)
 
-    if (project.length === 0) {
+    if (project === -1) {
       const folders = localStg.folders
 
       const stages = folders.map((f: IFolder) => {
-        const projectInFolder = f.items?.filter((p: IProject) => p.id === idProject)
+        const projectsInFolder = f.items ?? []
+        const projectInFolder = projectsInFolder?.findIndex((p: IProject) => p.id === idProject)
 
-        if (projectInFolder) return projectInFolder[0].stages
+        if (projectInFolder !== -1) return projectsInFolder[projectInFolder].stages
       })
 
       return stages[0]
     }
 
-    const stages: IStage[] = project[0].stages
+    const stages: IStage[] = projects[project].stages
 
     return stages
   }

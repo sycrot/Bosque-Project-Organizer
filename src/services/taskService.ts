@@ -79,15 +79,17 @@ export class TaskService {
     const localStg = getLocalStorage()
     const folders = localStg.folders
 
-    for (let i in folders) {
-      const project = folders[i].items?.filter((p: IProject) => p.id === stage.idProject)
+    folders.map((f: IFolder) => {
+      const projects = f.items ?? []
+      const projectIndex = projects.findIndex(p => p.id === stage.idProject)
 
-      if (project) {
-        const currentStage = project[0].stages.filter((s: IStage) => s.id === stage.id)[0]
+      if (projectIndex !== -1) {
+        const projectStages = projects[projectIndex].stages ?? []
+        const currentStage = projectStages.findIndex(s => s.id === stage.id)
 
-        return currentStage.tasks
+        if (currentStage !== -1) return projectStages[currentStage].tasks
       }
-    }
+    })
   }
 
   public deleteTask(task: ITask) {
