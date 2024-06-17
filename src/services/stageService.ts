@@ -96,7 +96,7 @@ export class StageService {
     const localStg = getLocalStorage()
     const projects = localStg.projects
     const project = projects.findIndex((p: IProject) => p.id === stage.idProject);
-    console.log(project)
+    
     if (project === -1) {
       this.updateStageFromFolder(stage)
       return
@@ -123,19 +123,21 @@ export class StageService {
 
     folders.map((f: IFolder) => {
       const projectsInFolder = f.items ?? []
-      const project = f.items?.findIndex(p => p.id === stage.idProject)
+      const project = projectsInFolder.findIndex(p => p.id === stage.idProject)
 
-      const currentProject = projectsInFolder[project ?? -1]
-      const projectStage = currentProject.stages.findIndex((s: IStage) => s.id === stage.id)
-
-      if (projectStage !== -1) {
-        currentProject.stages[projectStage] = stage
-
-        projectsInFolder[project ?? -1] = currentProject
-
-        this.dispatch(setFolders(folders))
-        this.dispatch(setProjects(projects))
-        updateLocalStorage(localStg)
+      if (project !== -1) {
+        const currentProject = projectsInFolder[project]
+        const projectStage = currentProject.stages.findIndex((s: IStage) => s.id === stage.id)
+  
+        if (projectStage !== -1) {
+          currentProject.stages[projectStage] = stage
+  
+          projectsInFolder[project ?? -1] = currentProject
+  
+          this.dispatch(setFolders(folders))
+          this.dispatch(setProjects(projects))
+          updateLocalStorage(localStg)
+        }
       }
     })
   }
