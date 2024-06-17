@@ -115,7 +115,7 @@ export default function FolderItem(props: IFolderItemProps) {
       <ModalComponent
         show={showDeleteModal}
         hide={toggleShowDeleteModal}
-        content={<p>Deseja realmente excluir <b>"{props.folder.title}"</b> e todo o seu conteúdo?</p>}
+        content={<p>Deseja realmente excluir <b>{`"props.folder.title"`}</b> e todo o seu conteúdo?</p>}
         action={deleteFolder}
         title={'Excluir pasta'}
         actionText='Excluir'

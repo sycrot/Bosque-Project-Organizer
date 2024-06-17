@@ -68,7 +68,7 @@ export default function Task(props: ITaskProps) {
       <ModalComponent
         show={showDeleteTask}
         hide={toggleShowDeleteTask}
-        content={<><p>Tem certeza que deseja concluir a tarefa: <b>"{props.task.title}"</b>`?<br /><span style={{color: 'orange'}}>Concluir excluirá a tarefa</span></p></>}
+        content={<><p>Tem certeza que deseja concluir a tarefa: <b>{`"${props.task.title}"`}</b>`?<br /><span style={{color: 'orange'}}>Concluir excluirá a tarefa</span></p></>}
         title={'Concluir tarefa?'}
         actionText={'Concluir'}
         action={deleteTask}

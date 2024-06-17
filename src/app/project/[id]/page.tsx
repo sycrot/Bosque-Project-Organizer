@@ -48,6 +48,7 @@ export default function ProjectPage() {
 
   return (
     <section className={styles.projectPage}>
+      <title>{currentProject.title}</title>
       <div className={styles.content}>
         <div className={styles.projectHeader}>
           <h3>{currentProject.title}</h3>

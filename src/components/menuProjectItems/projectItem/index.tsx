@@ -92,7 +92,7 @@ export default function ProjectItem(props: IProjectItemProps) {
       <ModalComponent
         show={showDeleteModal}
         hide={toggleShowDeleteModal}
-        content={<p>Deseja realmente excluir <b>"{props.project.title}"</b> ?</p>}
+        content={<p>Deseja realmente excluir <b>{`"${props.project.title}"`}</b> ?</p>}
         action={deleteProject}
         title={'Excluir projeto'}
         actionText='Excluir'
