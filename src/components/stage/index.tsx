@@ -100,7 +100,7 @@ export default function Stage(props: IStageProps) {
       <ModalComponent
         show={showDeleteModal}
         hide={toggleShowDeleteModal}
-        content={<p>Deseja realmente excluir <b>"{props.stage.title}"</b> e todo o seu conteúdo?</p>}
+        content={<p>Deseja realmente excluir <b>{`"${props.stage.title}"`}</b> e todo o seu conteúdo?</p>}
         action={deleteStage}
         title={'Excluir estágio?'}
         actionText='Excluir'
