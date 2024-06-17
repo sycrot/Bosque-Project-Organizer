@@ -17,15 +17,14 @@ export class StageService {
   public addStage(stage: IStage): void {
     const localStg = getLocalStorage()
     const projects = localStg.projects
-    const project = projects.filter((p: IProject) => p.id === stage.idProject)
+    const project = projects.findIndex((p: IProject) => p.id === stage.idProject)
 
-    if (project.length === 0) {
+    if (project === -1) {
       this.addStageInFolder(stage)
       return
     }
 
-    const stages = project[0].stages
-    console.log(project[0])
+    const stages = projects[project].stages
 
     const newStage: IStage = {
       ...stage,
@@ -43,10 +42,11 @@ export class StageService {
     const folders = localStg.folders
 
     folders.map((f: IFolder) => {
-      const project = f.items?.filter((p: IProject) => p.id === stage.idProject)
+      const projects = f.items ?? []
+      const projectIndex = projects.findIndex((p: IProject) => p.id === stage.idProject)
 
-      if (project) {
-        const stages = project[0].stages
+      if (projectIndex !== -1) {
+        const stages = projects[projectIndex].stages
 
         const newStage: IStage = {
           ...stage,
