@@ -44,7 +44,7 @@ export class TaskService {
     folders.map((f: IFolder) => {
       const projects = f.items ?? []
       const projectIndex = projects.findIndex((p: IProject) => p.id === task.idProject)
-      
+
       const newTask: ITask = {
         ...task,
         id: uuidv4(),
@@ -56,7 +56,7 @@ export class TaskService {
 
         if (stageIndex !== -1) {
           stages[stageIndex].tasks.push(newTask)
-  
+
           this.dispatch(setFolders(folders))
           this.dispatch(setProjects(projectsStg))
           updateLocalStorage(localStg)
@@ -110,43 +110,53 @@ export class TaskService {
   public deleteTask(task: ITask) {
     const localStg = getLocalStorage()
     const projects = localStg.projects
-    const projectWithoutFolder: IProject[] = projects.filter((v: IProject) => v.id === task.idProject)
+    const projectIndex = projects.findIndex((v: IProject) => v.id === task.idProject)
 
-    if (projectWithoutFolder.length === 0) {
+    if (projectIndex === -1) {
       this.deleteTaskInFolder(task)
-      this.dispatch(setProjects(projects))
       return
     }
 
-    const stage = projectWithoutFolder[0].stages.filter(s => s.id === task.idStage)
+    const stages = projects[projectIndex].stages
+    const stageIndex = stages.findIndex((s: IStage) => s.id === task.idStage)
 
-    const taskIndex = stage[0].tasks.findIndex(v => v.id === task.id)
+    if (stageIndex !== -1) {
+      const tasks = stages[stageIndex].tasks
+      const taskIndex = tasks.findIndex((v: ITask) => v.id === task.id)
 
-    if (taskIndex !== -1) {
-      stage[0].tasks.splice(taskIndex, 1)
+      if (taskIndex !== -1) {
+        tasks.splice(taskIndex, 1)
 
-      this.dispatch(setProjects(projects))
-      updateLocalStorage(localStg)
-      return
+        this.dispatch(setProjects(projects))
+        updateLocalStorage(localStg)
+      }
     }
   }
 
   public deleteTaskInFolder(task: ITask) {
     const localStg = getLocalStorage()
     const folders = localStg.folders
+    const projects = localStg.projects
 
-    folders.map((f: IFolder) => {
-      const project = f.items?.filter((p: IProject) => p.id === task.idProject)
+    folders.forEach((f: IFolder) => {
+      const projectsInFolder = f.items ?? []
+      const projectIndex = projectsInFolder.findIndex((p: IProject) => p.id === task.idProject)
 
-      if (project) {
-        const stage = project[0].stages.filter((s: IStage) => s.id === task.idStage)
-        const taskIndex = stage[0].tasks.findIndex(v => v.id === task.id)
+      if (projectIndex !== -1) {
+        const stages = projectsInFolder[projectIndex].stages
+        const stageIndex = stages.findIndex((s: IStage) => s.id === task.idStage)
 
-        if (taskIndex !== -1) {
-          stage[0].tasks.splice(taskIndex, 1)
+        if (stageIndex !== -1) {
+          const tasks = stages[stageIndex].tasks
+          const taskIndex = tasks.findIndex(v => v.id === task.id)
 
-          this.dispatch(setProjects(folders))
-          updateLocalStorage(localStg)
+          if (taskIndex !== -1) {
+            tasks.splice(taskIndex, 1)
+  
+            this.dispatch(setFolders(folders))
+            this.dispatch(setProjects(projects))
+            updateLocalStorage(localStg)
+          }
         }
       }
     })
