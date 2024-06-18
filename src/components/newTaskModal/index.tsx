@@ -11,7 +11,7 @@ import CloseIcon from '@/assets/icons/close-icon.svg';
 import * as yup from 'yup';
 import Dropdown from '../commom/inputs/dropdown';
 import { StageService } from '@/services/stageService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IStage } from '@/types/IStage';
 import { Icons } from '../commom/inputs/iconPicker/icons';
 import toast, { toastConfig } from 'react-simple-toasts';
@@ -30,12 +30,14 @@ export default function NewTaskModal(props: INewTaskModal) {
   const stageService = new StageService(dispatch)
   const taskService = new TaskService(dispatch)
   const [stageOptions, setStageOptions] = React.useState([])
+  const projects = useSelector((s: any) => s.projectsReducer)
+  const folders = useSelector((s: any) => s.foldersReducer)
 
   React.useEffect(() => {
     const getOptionsStages = () => {
       const options: any = []
-      const stages: IStage[] = stageService.getStages(props.stage.idProject ?? '')
-
+      const stages: IStage[] = stageService.getStages(props.stage.idProject as string)
+      
       stages?.map(s => {
         options.push({ value: s.id,  label: <span><Icons iconName={s.icon} /> {s.title}</span> })
       })
@@ -44,7 +46,7 @@ export default function NewTaskModal(props: INewTaskModal) {
     }
 
     getOptionsStages()
-  }, [props.stage.id])
+  }, [projects, folders])
 
   const formInitialValues = {
     title: '',

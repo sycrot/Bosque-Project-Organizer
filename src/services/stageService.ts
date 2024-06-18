@@ -84,7 +84,7 @@ export class StageService {
         if (projectInFolder !== -1) return projectsInFolder[projectInFolder].stages
       })
 
-      return stages[0]
+      return stages.filter((v: any) => v !== undefined)[0]
     }
 
     const stages: IStage[] = projects[project].stages

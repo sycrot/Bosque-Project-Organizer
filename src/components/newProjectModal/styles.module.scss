@@ -15,7 +15,9 @@
 
   .colColor {
     padding-right: 0;
-    margin-top: -5px;
+    @media screen and (min-width: 720px) {
+      margin-top: -5px !important;
+    }
   }
 
   .colDropdown {

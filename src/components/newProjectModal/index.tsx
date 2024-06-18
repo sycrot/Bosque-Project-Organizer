@@ -133,7 +133,7 @@ export default function NewProjectModal(props: INewProjectModalProps) {
                     label={'Cor'}
                   />
                 </Col>
-                <Col md={5} className={styles.colDropdown}>
+                <Col md={5} className={`${styles.colDropdown}`}>
                   <Dropdown
                     value={values.folderId}
                     options={folderOptions}

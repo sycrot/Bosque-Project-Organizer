@@ -34,7 +34,7 @@ export default function Stage(props: IStageProps) {
   React.useEffect(() => {
     const getTasks = () => {
       const tasks = tasksService.getTasks(props.stage)
-
+      
       setTasks(tasks)
     }
 

@@ -137,7 +137,7 @@ export default function Stages(props: IStageProps) {
           {({ errors, touched, values, setFieldValue }) => (
             <Form>
               <Row>
-                <Col sm={2}>
+                <Col xs={2}>
                   <IconPicker
                     value={values.icon}
                     onChange={(e: any) => setFieldValue('icon', e)}
@@ -145,7 +145,7 @@ export default function Stages(props: IStageProps) {
                     style={{ zIndex: '999' }}
                   />
                 </Col>
-                <Col sm={5}>
+                <Col xs={5}>
 
                   <InputDefault
                     name={'stage'}
@@ -153,14 +153,14 @@ export default function Stages(props: IStageProps) {
                     label={'Estágio'}
                   />
                 </Col>
-                <Col sm={3} style={{ position: 'relative' }}>
+                <Col xs={3} style={{ position: 'relative' }}>
                   <InputDefault
                     name={'level'}
                     type={'number'}
                     label={'Nível'}
                   />
                 </Col>
-                <Col sm={2}>
+                <Col xs={2}>
                   <button type="button" className={styles.buttonAdd} onClick={() => onSubmit(values)}>
                     <Image src={AddIcon} alt="" />
                   </button>

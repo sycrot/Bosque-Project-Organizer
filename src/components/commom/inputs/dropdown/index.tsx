@@ -12,7 +12,7 @@ export default function Dropdown(props: IDropdownProps) {
   const handleItemName = () => {
     const option = props.options.filter((v:any) => props.value === v.value)
 
-    return option[0].label
+    if (option.length > 0) return option[0].label
   }
 
   return (

@@ -6,21 +6,24 @@ import ProjectIcon from '@/assets/icons/project-blue.svg'
 import Image from 'next/image';
 import { ProjectService } from '@/services/projectService';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 
 export default function ProjectItem (props: IProjectItemProps) {
   const dispatch = useDispatch()
   const projectService = new ProjectService(dispatch)
+  const router = useRouter()
 
   const onClick = () => {
     projectService.updateLastVisited(props.project)
+    router.push(`/project/${props.project.id}`)
   }
 
   return (
-    <Link href={`/project/${props.project.id}`} className={styles.projectItem} style={props.style} onClick={onClick}>
+    <div className={styles.projectItem} style={props.style} onClick={onClick}>
       <span style={{ background: props.project.color }}></span>
       <Image src={ProjectIcon} alt={props.project.title} />
       <p>{props.project.title}</p>
-    </Link>
+    </div>
   )
 }

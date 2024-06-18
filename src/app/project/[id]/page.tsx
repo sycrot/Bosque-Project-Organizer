@@ -26,7 +26,6 @@ export default function ProjectPage() {
   React.useEffect(() => {
     const getProject = () => {
       const project = projectService.getProject(id.toString())
-
       if (project) {
         setCurrentProject(project)
       } else {
