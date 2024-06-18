@@ -6,12 +6,14 @@
       font-size: 32px;
       font-weight: 400;
       color: #fff;
+      margin: 0;
     }
 
     .projectHeader {
       display: flex;
       gap: 1em;
       align-items: center;
+      margin-bottom: .6em;
 
       button {
         width: 30px;
