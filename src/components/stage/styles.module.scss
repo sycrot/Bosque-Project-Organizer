@@ -33,6 +33,20 @@
       display: flex;
       gap: 8px;
 
+      .buttonFinish {
+        background: none;
+        color: #fff;
+        border: none;
+        padding: 0;
+        margin-right: 1.6em;
+        font-size: 14px;
+        transition: color .3s;
+
+        &:hover {
+          color: #505f66;
+        }
+      }
+
       .buttonAdd {
         display: flex;
         justify-content: center;

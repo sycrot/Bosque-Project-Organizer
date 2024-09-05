@@ -96,7 +96,7 @@ export class StageService {
     const localStg = getLocalStorage()
     const projects = localStg.projects
     const project = projects.findIndex((p: IProject) => p.id === stage.idProject);
-    
+
     if (project === -1) {
       this.updateStageFromFolder(stage)
       return
@@ -128,12 +128,12 @@ export class StageService {
       if (project !== -1) {
         const currentProject = projectsInFolder[project]
         const projectStage = currentProject.stages.findIndex((s: IStage) => s.id === stage.id)
-  
+
         if (projectStage !== -1) {
           currentProject.stages[projectStage] = stage
-  
+
           projectsInFolder[project ?? -1] = currentProject
-  
+
           this.dispatch(setFolders(folders))
           this.dispatch(setProjects(projects))
           updateLocalStorage(localStg)
@@ -174,6 +174,48 @@ export class StageService {
         const projectStage = projectStages.findIndex((s: IStage) => s.id === stage.id)
 
         if (projectStage !== -1) projectStages.splice(projectStage, 1)
+
+        this.dispatch(setProjects(folders))
+        this.dispatch(setProjects(projects))
+        updateLocalStorage(localStg)
+      }
+    })
+  }
+
+  public finishAllTasks(stage: IStage) {
+    const localStg = getLocalStorage()
+    const projects = localStg.projects
+    const project = projects.filter((p: IProject) => p.id === stage.idProject)
+
+    if (project.length === 0) {
+      this.finishAllTasksFromFolder(stage)
+      return
+    }
+
+    const projectStages = project[0].stages
+    const projectStage = projectStages.findIndex((s: IStage) => s.id === stage.id)
+
+    if (projectStage !== -1) projectStages[projectStage].tasks = [];
+
+    this.dispatch(setProjects(projects))
+    updateLocalStorage(localStg)
+  }
+
+  public finishAllTasksFromFolder(stage: IStage) {
+    const localStg = getLocalStorage()
+    const folders = localStg.folders
+    const projects = localStg.projects
+
+    folders.map((f: IFolder) => {
+      const project = f.items?.filter(p => p.id === stage.idProject)
+
+      if (project) {
+        const projectStages = project[0].stages
+        const projectStage = projectStages.findIndex((s: IStage) => s.id === stage.id)
+
+        if (projectStage !== -1) {
+          projectStages[projectStage].tasks = [];
+        }
 
         this.dispatch(setProjects(folders))
         this.dispatch(setProjects(projects))

@@ -26,6 +26,11 @@ export default function Stage(props: IStageProps) {
   const stageService = new StageService(dispatch)
   const [showDeleteModal, setShowDeleteModal] = React.useState(false)
   const [showUpdateModal, setShowUpdateModal] = React.useState(false)
+  const [showFinishModal, setShowFinishModal] = React.useState(false)
+
+  const toggleShowFinishModal = () => {
+    setShowFinishModal(!showFinishModal);
+  }
 
   const toggleShowNewTask = () => {
     setShowNewTask(!showNewTask)
@@ -34,7 +39,7 @@ export default function Stage(props: IStageProps) {
   React.useEffect(() => {
     const getTasks = () => {
       const tasks = tasksService.getTasks(props.stage)
-      
+
       setTasks(tasks)
     }
 
@@ -59,14 +64,25 @@ export default function Stage(props: IStageProps) {
     toggleShowUpdateModal()
   }
 
+  const handleFinishAll = (e: React.MouseEvent) => {
+    e.preventDefault();
+    toggleShowFinishModal();
+  }
+
   const actions: IAction[] = [
     { title: 'Editar', function: handleUpdateStage },
     { title: 'Excluir', function: handleDeleteStage },
+    { title: 'Concluir tudo', function: handleDeleteStage },
   ]
 
   const deleteStage = () => {
     stageService.removeStage(props.stage)
     toggleShowDeleteModal()
+  }
+
+  const finishAll = () => {
+    stageService.finishAllTasks(props.stage);
+    toggleShowFinishModal();
   }
 
   return (
@@ -77,12 +93,13 @@ export default function Stage(props: IStageProps) {
           <h4>{props.stage.title}</h4>
         </div>
         <div className={styles.actionsHeader}>
+          {tasks && tasks.length > 0 && <button className={styles.buttonFinish} onClick={handleFinishAll}>Concluir tudo</button>}
           <button onClick={toggleShowNewTask} className={styles.buttonAdd}><Image src={AddIcon} alt="Adicionar" /></button>
           <DropdownActions actions={actions} buttonContent={<Image src={MenuIcon} alt="Opções" />} buttonActionStyle={{ height: '18px', display: 'flex', alignItems: 'center' }} />
         </div>
       </div>
       <div className={styles.content}>
-        {tasks ?
+        {tasks && tasks.length > 0 ?
           tasks.map(t => (
             <Task key={t.id} task={t} />
           ))
@@ -104,6 +121,15 @@ export default function Stage(props: IStageProps) {
         action={deleteStage}
         title={'Excluir estágio?'}
         actionText='Excluir'
+      />
+
+      <ModalComponent
+        show={showFinishModal}
+        hide={toggleShowFinishModal}
+        content={<p>Deseja realmente excluir todas as tarefas de <b>{`"${props.stage.title}"`}</b>?</p>}
+        action={finishAll}
+        title={'Concluir todas as tarefas?'}
+        actionText='Concluir'
       />
 
       <NewStageModal
