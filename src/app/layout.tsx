@@ -16,7 +16,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
+
+  const { version: appVersion } = require("package.json");
+
+  console.log(`Bosque Main APP - ${appVersion}`);
+
   return (
     <html lang="en">
       <body className={inter.className}>

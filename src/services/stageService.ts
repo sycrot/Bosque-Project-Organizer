@@ -208,9 +208,9 @@ export class StageService {
 
     for (let i in folders) {
       const project = folders[i].items?.filter((p: IProject) => p.id === stage.idProject)
+      console.log(project)
 
-      if (project) {
-        console.log(project)
+      if (project && project.length > 0) {
         const projectStages = project[0].stages
         const projectStage = projectStages.findIndex((s: IStage) => s.id === stage.id)
 
