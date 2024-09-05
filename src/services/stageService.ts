@@ -166,8 +166,8 @@ export class StageService {
     const folders = localStg.folders
     const projects = localStg.projects
 
-    folders.map((f: IFolder) => {
-      const project = f.items?.filter(p => p.id === stage.idProject)
+    for (let i in folders) {
+      const project = folders[i].items?.filter((p: IProject) => p.id === stage.idProject);
 
       if (project) {
         const projectStages = project[0].stages
@@ -179,7 +179,7 @@ export class StageService {
         this.dispatch(setProjects(projects))
         updateLocalStorage(localStg)
       }
-    })
+    }
   }
 
   public finishAllTasks(stage: IStage) {
@@ -206,10 +206,11 @@ export class StageService {
     const folders = localStg.folders
     const projects = localStg.projects
 
-    folders.map((f: IFolder) => {
-      const project = f.items?.filter(p => p.id === stage.idProject)
+    for (let i in folders) {
+      const project = folders[i].items?.filter((p: IProject) => p.id === stage.idProject)
 
       if (project) {
+        console.log(project)
         const projectStages = project[0].stages
         const projectStage = projectStages.findIndex((s: IStage) => s.id === stage.id)
 
@@ -221,6 +222,6 @@ export class StageService {
         this.dispatch(setProjects(projects))
         updateLocalStorage(localStg)
       }
-    })
+    }
   }
 }
