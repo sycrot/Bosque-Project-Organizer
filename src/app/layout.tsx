@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const { version: appVersion } = require("package.json");
+  const { version: appVersion } = require("../../package.json");
 
   console.log(`Bosque Main APP - ${appVersion}`);
 
