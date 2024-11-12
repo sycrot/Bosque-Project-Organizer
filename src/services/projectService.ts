@@ -30,7 +30,8 @@ export class ProjectService {
       ...project,
       id: uuidv4(),
       created: created.toISOString(),
-      lastVisited: created.toISOString()
+      lastVisited: created.toISOString(),
+      workingTime: 0,
     }
 
     if (newProject.stages) {
@@ -57,6 +58,7 @@ export class ProjectService {
       id: uuidv4(),
       created: created.toISOString(),
       lastVisited: created.toISOString(),
+      workingTime: 0,
     }
 
     if (newProject.stages) {
@@ -65,7 +67,7 @@ export class ProjectService {
         idProject: newProject.id
       }));
     }
-    
+
     folder.items.push(newProject)
 
     this.dispatch(setFolders(localStg.folders))
@@ -92,7 +94,7 @@ export class ProjectService {
 
     folders[folderIndex].items[projectIndex] = project
 
-    updateLocalStorage({...localStg, folders })
+    updateLocalStorage({ ...localStg, folders })
     this.dispatch(setFolders(localStg.folders))
   }
 
@@ -103,14 +105,14 @@ export class ProjectService {
       const projects = localStg.projects
       const project = projects.filter((v: IProject) => v.id === id)
       const projectInFolder = folderService.getProjects().filter((p: IProject) => p.id === id)
-  
+
       if (project.length > 0) {
         return project[0]
       } else {
         return projectInFolder[0]
       }
     }
-    
+
   }
 
   public getProjects(): any {
@@ -121,7 +123,7 @@ export class ProjectService {
       this.dispatch(setProjects(projects))
       return projects;
     }
-    
+
   }
 
   public updateProject(item: IProject) {
@@ -143,7 +145,7 @@ export class ProjectService {
 
     const projects = localStg.projects
     const projectIndex = projects.findIndex((i: IProject) => i.id === item.id)
-  
+
     if (projectIndex !== -1) projects[projectIndex] = item
 
     this.dispatch(setProjects(projects))
@@ -196,5 +198,40 @@ export class ProjectService {
 
     this.dispatch(setProjects(folders))
     updateLocalStorage(localStg)
+  }
+
+  public updateTimeProject(item: IProject, time: number) {
+    const localStg = getLocalStorage();
+    const projects = localStg.projects;
+    const project = projects.filter((p: IProject) => p.id === item.id);
+
+    if (project.length === 0) {
+      this.updateLastVisitedInFolder(item);
+      this.dispatch(setProjects(projects));
+      return
+    }
+
+    project[0].workingTime = time;
+
+    this.dispatch(setProjects(projects));
+    updateLocalStorage(localStg);
+  }
+
+  public updateTimeProjectInFolder(item: IProject, time: number) {
+    const localStg = getLocalStorage();
+    const folders = localStg.folders;
+    const folderIndex = folders.findIndex((f: IFolder) => f.id === item.idFolder);
+
+    if (folderIndex === -1) {
+      console.error('Folder not found');
+      return;
+    }
+
+    const project = folders[folderIndex].items.filter((p: IProject) => p.id === item.id);
+
+    project[0].workingTime = time;
+
+    this.dispatch(setProjects(folders));
+    updateLocalStorage(localStg);
   }
 }

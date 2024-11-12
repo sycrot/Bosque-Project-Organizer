@@ -12,12 +12,13 @@ import Stage from '@/components/stage';
 import { sortByLevel } from '@/utils/util';
 import EditIcon from '@/assets/icons/edit-icon.svg'
 import NewProjectModal from '@/components/newProjectModal';
+import Stopwatch from '@/components/stopwatch';
 
 export default function ProjectPage() {
   const { id } = useParams()
   const dispatch = useDispatch()
   const projectService = new ProjectService(dispatch)
-  const [currentProject, setCurrentProject] = React.useState<IProject>({ title: '', color: '', stages: [] })
+  const [currentProject, setCurrentProject] = React.useState<IProject>({ title: '', color: '', stages: [], workingTime: 0 })
   const [showNewStage, setShowNewStage] = React.useState(false)
   const [showEditProject, setShowEditProject] = React.useState(false)
   const projects = useSelector((s: any) => s.projectsReducer)
@@ -49,12 +50,19 @@ export default function ProjectPage() {
     <section className={styles.projectPage}>
       <title>{currentProject.title}</title>
       <div className={styles.content}>
-        <div className={styles.projectHeader}>
-          <h3>{currentProject.title}</h3>
-          <button onClick={toggleShowEditProject}><Image src={EditIcon} alt="Editar" /></button>
-        </div>
+        <div className={styles.projectHeaderContainer}>
+          <div>
+            <div className={styles.projectHeader}>
+              <h3>{currentProject.title}</h3>
+              <button onClick={toggleShowEditProject}><Image src={EditIcon} alt="Editar" /></button>
+            </div>
 
-        <button className={styles.addStageButton} onClick={toggleShowNewStage}><Image src={StageIcon} alt="Adicionar estágio" /><p>Adicionar estágio</p></button>
+            <button className={styles.addStageButton} onClick={toggleShowNewStage}><Image src={StageIcon} alt="Adicionar estágio" /><p>Adicionar estágio</p></button>
+          </div>
+          <Stopwatch
+            project={currentProject}
+          />
+        </div>
 
         {sortByLevel(currentProject.stages).map(s => (
           <Stage key={s.id} stage={s} project={currentProject} />

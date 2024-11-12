@@ -1,0 +1,40 @@
+.inputTime {
+  display: flex;
+  flex-direction: column;
+
+  button {
+    border: none;
+    background: none;
+    padding: 0;
+    color: #343f44;
+    display: flex;
+    justify-content: center;
+
+    &:hover {
+      color: #F3F7EC;
+    }
+  }
+
+  input {
+    margin: 0;
+    color: #F3F7EC;
+    font-weight: bold;
+    font-size: 24px;
+    background: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 30px;
+    outline: none;
+    border: none;
+    text-align: center;
+
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}
