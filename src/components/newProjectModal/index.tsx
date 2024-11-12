@@ -66,7 +66,7 @@ export default function NewProjectModal(props: INewProjectModalProps) {
       folders?.map((v: IFolder) => {
         options.push({ value: v.id, label: v.title })
       })
-  
+
       setFolderOptions(options)
     }
   }, [folders])
@@ -84,7 +84,8 @@ export default function NewProjectModal(props: INewProjectModalProps) {
       idFolder: values.folderId,
       stages: values.stages,
       created: project?.created,
-      lastVisited: project?.lastVisited
+      lastVisited: project?.lastVisited,
+      workingTime: 0
     }
 
     if (project) {
@@ -97,10 +98,10 @@ export default function NewProjectModal(props: INewProjectModalProps) {
   }
 
   const defaultStages: any = [
-    {id: uuidv4(), icon: 'Close', title: 'Não iniciado', stage: 0, tasks: []},
-    {id: uuidv4(), icon: 'Loading', title: 'Em andamento', stage: 1, tasks: []},
-    {id: uuidv4(), icon: 'Config', title: 'Em teste', stage: 2, tasks: []},
-    {id: uuidv4(), icon: 'Finish', title: 'Concluído', stage: 3, tasks: []},
+    { id: uuidv4(), icon: 'Close', title: 'Não iniciado', stage: 0, tasks: [] },
+    { id: uuidv4(), icon: 'Loading', title: 'Em andamento', stage: 1, tasks: [] },
+    { id: uuidv4(), icon: 'Config', title: 'Em teste', stage: 2, tasks: [] },
+    { id: uuidv4(), icon: 'Finish', title: 'Concluído', stage: 3, tasks: [] },
   ]
 
   return (
@@ -147,8 +148,9 @@ export default function NewProjectModal(props: INewProjectModalProps) {
                 <button type="button" onClick={e => {
                   e.preventDefault()
                   e.stopPropagation()
-                  setFieldValue('stages', defaultStages)}
-                  }>Estágios padrão</button>
+                  setFieldValue('stages', defaultStages)
+                }
+                }>Estágios padrão</button>
               </Row>
               <Stages value={values.stages} onChange={(e) => setFieldValue('stages', e)} />
             </Modal.Body>
