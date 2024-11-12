@@ -79,7 +79,8 @@ export default function FolderItem(props: IFolderItemProps) {
     idFolder: props.folder.id,
     title: '',
     stages: [],
-    color: ''
+    color: '',
+    workingTime: 0
   }
 
   return (
