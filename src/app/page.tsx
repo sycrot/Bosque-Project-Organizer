@@ -16,8 +16,8 @@ export default function Home() {
   const folders = useSelector((state: any) => state.foldersReducer)
 
   React.useEffect(() => {
-    const localStg = getLocalStorage()
-    !localStg && createLists()
+    const localStg = getLocalStorage();
+    if (!localStg) createLists();
 
     if (Array.isArray(projects) && Array.isArray(folders)) {
       const projectsInFolder: IProject[] = []
@@ -30,26 +30,26 @@ export default function Home() {
 
       const concat: IProject[] = projects.concat(projectsInFolder)
 
-      const localStg = getLocalStorage()
-      const lastVisited = localStg.homeLastVisited
+      const lastVisited = localStg?.homeLastVisited ?? "";
+      let foundNewerProject = false;
 
-      if (lastVisited !== "") {
-        const lastDate = new Date(lastVisited)
-        
+      if (lastVisited) {
+        const lastDate = new Date(lastVisited);
+
         concat.map(p => {
-          const date = new Date(p.lastVisited ?? '')
-  
+          const date = new Date(p.lastVisited ?? '');
+
           if (date > lastDate) {
+            foundNewerProject = true;
             deleteLastVisitedHome()
             window.location.assign(`/project/${p.id}`)
-          } else {
-            lastVisitedHome()
           }
-        })
+        });
+
+        if (!foundNewerProject) lastVisitedHome();
       } else {
-        lastVisitedHome()
+        lastVisitedHome();
       }
-      
 
       setProjectsRender(concat)
     }
