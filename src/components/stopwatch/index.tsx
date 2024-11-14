@@ -55,11 +55,11 @@ export default function Stopwatch(props: IStopwatchProps) {
   /* const milliseconds = time % 100; */
 
   const startAndStop = () => {
-    setIsRunning(!isRunning);
-
     if (isRunning) {
       projectService.updateTimeProject(project, time);
     }
+
+    setIsRunning(!isRunning);
   };
 
   const reset = () => {

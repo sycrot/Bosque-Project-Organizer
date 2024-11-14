@@ -206,7 +206,7 @@ export class ProjectService {
     const project = projects.filter((p: IProject) => p.id === item.id);
 
     if (project.length === 0) {
-      this.updateLastVisitedInFolder(item);
+      this.updateTimeProjectInFolder(item, time);
       this.dispatch(setProjects(projects));
       return
     }
@@ -228,6 +228,8 @@ export class ProjectService {
     }
 
     const project = folders[folderIndex].items.filter((p: IProject) => p.id === item.id);
+
+    console.log(project);
 
     project[0].workingTime = time;
 
